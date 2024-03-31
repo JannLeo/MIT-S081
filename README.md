@@ -1,0 +1,23 @@
+#### 本项目是有关MIT6.S081课程的学习
+
+- 环境配置步骤
+  - 安装Ubuntu 20.04
+  - 换源成阿里云
+  - 配置SSH 用mobaxterm连接方便copy指令
+  - 下载VIM net-tool
+  -  sudo apt update
+  -  sudo apt upgrade
+  - sudo apt install git build-essential gdb-multiarch qemu-system-misc gcc-riscv64-linux-gnu binutils-riscv64-linux-gnu libglib2.0-dev libpixman-1-dev gcc-riscv64-unknown-elf 
+  - wget https://download.qemu.org/qemu-5.1.0.tar.xz
+  - tar xvf qemu-5.1.0.tar.xz
+  - cd qemu-5.1.0
+  - ./configure --disable-kvm --disable-werror --prefix=/usr/local --target-list="riscv64-softmmu"
+  - make
+  - sudo make install
+  - riscv64-unknown-elf-gcc --version 预期 riscv64-unknown-elf-gcc (GCC) 10.1.0
+  - qemu-system-riscv64 --version 预期： QEMU emulator version 5.1.0
+  - git clone git://g.csail.mit.edu/xv6-labs-2020
+  - cd xv6-labs-2020
+  - git checkout util
+  - make qemu
+  - 退出
