@@ -19,17 +19,20 @@ main(int argc, char *argv[])
   if(fork() == 0){
     read(p[0],str,4);
     close(p[0]);
+    fprintf(1,"%d : received %s\n",pro_num,str);
     write(p[1],"pong",4);
     close(p[1]);
-    fprintf(1,"%d : received %s\n",pro_num,str);
+    
   }
   else{
-    read(p[0],str,4);
-    close(p[0]);
+    
     write(p[1],"ping",4);
     close(p[1]);
-    fprintf(1,"%d : received %s\n",pro_num,str);
     wait(0);
+    read(p[0],str,4);
+    close(p[0]);
+    fprintf(1,"%d : received %s\n",pro_num,str);
+    
   }
   exit(0);
 }
