@@ -10,7 +10,7 @@ int
 main(int argc, char *argv[])
 {
   int p[2];
-  char *str;
+  char str[1024];
   if(pipe(p)<0){
     fprintf(2,"error for pipe\n");
     exit(1);
