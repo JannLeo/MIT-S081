@@ -1,5 +1,5 @@
 // pingpong.c
-// author : Junnan Liu
+// Author : Junnan Liu
 // date: 05/04/2024
 
 #include "kernel/types.h"
@@ -10,13 +10,14 @@ int
 main(int argc, char *argv[])
 {
   int p[2];
-  char str[1024];
+  char str[5];
   if(pipe(p)<0){
     fprintf(2,"error for pipe\n");
     exit(1);
   }
-  int pro_num = getpid();
+  int pro_num;
   if(fork() == 0){
+    pro_num = getpid();
     read(p[0],str,4);
     close(p[0]);
     fprintf(1,"%d : received %s\n",pro_num,str);
@@ -25,7 +26,7 @@ main(int argc, char *argv[])
     
   }
   else{
-    
+    pro_num = getpid();
     write(p[1],"ping",4);
     close(p[1]);
     wait(0);
