@@ -7,7 +7,7 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 
-void DFS(int num,int **p,int pipe_num){
+void DFS(int num,int p[34][2],int pipe_num){
     int flag = 0;
     int i;
     pipe_num %= 34;
