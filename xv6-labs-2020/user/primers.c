@@ -63,7 +63,7 @@ main(int argc, char *argv[])
             else if(pid != 0){
                 
                 write(p[1][1],&i,sizeof(int));
-                fprintf(1, "main write successfully %d\n",i-2);
+                // fprintf(1, "main write successfully %d\n",i-2);
             }
         }
     }
