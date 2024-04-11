@@ -13,7 +13,7 @@ void DFS(int num,int p[34][2],int pipe_num){
     pipe_num %= 34;
     if (pipe(p[pipe_num]) < 0) {
         fprintf(2, "Error creating pipe\n");
-        exit(2);
+        exit(1);
     }
     int pid = fork();
     while(read(p[pipe_num][0],&i,sizeof(int))){
@@ -28,6 +28,7 @@ void DFS(int num,int p[34][2],int pipe_num){
                 exit(2);
             }
             else{
+                fprintf(1, "main write successfully %d DFS\n",i-2);
                 write(p[pipe_num+1][1],&i,sizeof(int));
             }
         }
@@ -55,11 +56,14 @@ main(int argc, char *argv[])
     for(int i=num+1;i<=35;i++){
         if(i%num!= 0 ){
             if(pid==0 && flag){
+                fprintf(1, "fork enter first time\n");
                 DFS(num,p,0);
                 flag = 0;
             }
             else if(pid != 0){
+                
                 write(p[1][1],&i,sizeof(int));
+                fprintf(1, "main write successfully %d\n",i-2);
             }
         }
     }
