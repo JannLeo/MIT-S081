@@ -74,6 +74,7 @@ main(int argc, char *argv[])
                     if(read_num % num != 0 ){
                         if(!flagg && pid == 0){
                             fprintf(1,"%d\n",i);
+                            pid = getpid();
                             num = read_num;
                             pipe_num += 1;
                             flagg = 1;
