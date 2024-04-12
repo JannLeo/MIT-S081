@@ -8,112 +8,66 @@
 #include "kernel/stat.h"
 #include "user/user.h"
 //二维矩阵表示每个进程的管道
-int p[34][2];
-// void DFS(int pipe_num){
-//     int flag = 0;
-//     int i;
-//     pipe_num %= 34;
-//     if (pipe(p[pipe_num]) < 0) {
-//         fprintf(2, "Error creating pipe\n");
-//         exit(1);
-//     }
-//     int pid = fork();
-//     while(read(p[pipe_num][0],&i,sizeof(int))){
-//         if(i % num != 0 ){
-//             if(!flag && pid == 0){
-//                 fprintf(1,"%d\n",i);
-//                 num = i;
-//                 pipe_num += 1;
-//                 flag = 1;
-//                 pid = fork();
-//             }
-//             else if (pid < 0){
-//                 fprintf(2, "Error forking\n");
-//                 exit(2);
-//             }
-//             else{
-//                 fprintf(1, "main write successfully %d DFS\n",i-2);
-//                 write(p[pipe_num+1][1],&i,sizeof(int));
-//             }
-//         }
-//     }
-//     wait(0);
-//     close(p[pipe_num][0]);
-//     close(p[pipe_num][1]);
-//     exit(0);
-    
-// }
+
+void DFS(int *fd){
+    int i;
+    int num;
+    //读取第一个值
+    read (fd,num,sizeof(int));
+    fprintf(1, "%d \n",num);
+    //创建管道
+    int p[2];
+    if (pipe(p) < 0) {
+        fprintf(2, "Error creating pipe\n");
+        exit(1);
+    }
+    int temp = -1;
+    while(1){
+        temp = read(fd,&i,sizeof(int));
+        if(temp < 0)
+            break;
+        if(i % num != 0 ){
+            fprintf(1, "Write successfully %d DFS\n",i-2);
+            write(p[1],&i,sizeof(int));
+        }
+    }
+    if(temp==-1){
+        close(p[1]);
+        close(p[0]);
+        close(fd);
+        return;
+    }
+    int pid = fork();
+    if(pid == 0){
+        close(p[1]);
+        close(fd);
+        DFS(p[0]);
+        close(p[0]);
+    }else{
+        close(p[1]);
+        close(p[0]);
+        close(fd);
+        wait(0);
+    }
+}
 
 int
 main(int argc, char *argv[])
 {
-    int num=2;
     int flag=1;
-    fprintf(1,"%d\n",num);
-    if (pipe(p[0]) < 0) {
+    int p[2];
+    if (pipe(p) < 0) {
         fprintf(2, "Error creating pipe\n");
         exit(2);
     }
-    int pid = fork();
     int pipe_num = 1;
-    for(int i=num+1;i<=35;i++){
-        if(i%num!= 0 ){
-            if(pid==0 && flag){
-                fprintf(1, "fork enter first time\n");
-                int flagg = 0;
-                int read_num;
-                int temp = -1;
-                pipe_num %= 34;
-                if (pipe(p[pipe_num]) < 0) {
-                    fprintf(2, "Error creating pipe\n");
-                    exit(1);
-                }
-                fprintf(1, "Began to read\n");
-                
-                while(1){
-                    temp = read(p[pipe_num-1][0],&read_num,sizeof(int));
-                    if(temp == -1){
-                        fprintf(1,"Without read number\n");
-                        break;
-                    }
-                    fprintf(1,"read number %d\n",read_num);
-                    if(read_num % num != 0 ){
-                        if(!flagg && pid == 0){
-                            fprintf(1,"%d\n",i);
-                            pid = getpid();
-                            num = read_num;
-                            pipe_num += 1;
-                            flagg = 1;
-                            pid = fork();
-                        }
-                        else if (pid < 0){
-                            fprintf(2, "Error forking\n");
-                            exit(2);
-                        }
-                        else{
-                            fprintf(1, "main write successfully %d DFS\r\n",i-2);
-                            write(p[pipe_num][1],&i,sizeof(int));
-                            
-                        }
-                    }
-                }
-                fprintf(1,"%d begin to wait\r\n",num);
-                wait(0);
-                close(p[pipe_num][0]);
-                close(p[pipe_num+1][1]);
-                exit(0);
-                flag = 0;
-            }
-            else if(pid != 0){
-                // fprintf(1, "Write number %d\n",i);
-                write(p[1][1],&i,sizeof(int));
-                // fprintf(1, "main write successfully %d\n",i-2);
-            }
-        }
+    for(int i=2;i<=35;i++){
+        int num;
+        write(p[1],&num,sizeof(int));
     }
-    close(p[0][1]);
-    wait(0);
-    close(p[0][0]);
+    close(p[1]);
+    DFS(p[0]);
+    close(p[0]);
     
-    exit(0);
+    exit(1);
 }
