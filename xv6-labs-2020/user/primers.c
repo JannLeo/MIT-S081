@@ -98,7 +98,7 @@ main(int argc, char *argv[])
                 flag = 0;
             }
             else if(pid != 0){
-                fprintf(1, "Write number %d\n",i);
+                // fprintf(1, "Write number %d\n",i);
                 write(p[0][1],&i,sizeof(int));
                 // fprintf(1, "main write successfully %d\n",i-2);
             }
