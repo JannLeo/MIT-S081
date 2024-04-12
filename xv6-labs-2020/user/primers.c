@@ -9,7 +9,7 @@
 #include "user/user.h"
 //二维矩阵表示每个进程的管道
 
-void DFS(int *fd){
+void DFS(int fd){
     int i;
     int num;
     //读取第一个值
