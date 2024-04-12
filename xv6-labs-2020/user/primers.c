@@ -2,6 +2,7 @@
 // Author : Junnan Liu
 // date: 05/04/2024
 // update : 11/04/2024
+// update : 12/04/2024
 
 #include "kernel/types.h"
 #include "kernel/stat.h"
@@ -23,8 +24,9 @@ void DFS(int pipe_num){
             if(!flag && pid == 0){
                 fprintf(1,"%d\n",i);
                 num = i;
-                DFS(pipe_num+1);
+                pipe_num += 1;
                 flag = 1;
+                pid = fork();
             }
             else if (pid < 0){
                 fprintf(2, "Error forking\n");
@@ -62,7 +64,7 @@ main(int argc, char *argv[])
                 flag = 0;
             }
             else if(pid != 0){
-                write(p[1][1],&i,sizeof(int));
+                write(p[0][1],&i,sizeof(int));
                 // fprintf(1, "main write successfully %d\n",i-2);
             }
         }
