@@ -13,7 +13,7 @@ void DFS(int fd){
     int i;
     int num;
     //读取第一个值
-    read (fd,num,sizeof(int));
+    read (fd,&num,sizeof(int));
     fprintf(1, "%d \n",num);
     //创建管道
     int p[2];
@@ -54,15 +54,13 @@ void DFS(int fd){
 int
 main(int argc, char *argv[])
 {
-    int flag=1;
     int p[2];
     if (pipe(p) < 0) {
         fprintf(2, "Error creating pipe\n");
         exit(2);
     }
-    int pipe_num = 1;
     for(int i=2;i<=35;i++){
-        int num;
+        int num = i;
         write(p[1],&num,sizeof(int));
     }
     close(p[1]);
