@@ -6,8 +6,10 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "user/user.h"
-
-void DFS(int num,int p[34][2],int pipe_num){
+//二维矩阵表示每个进程的管道
+int p[34][2];
+int num;
+void DFS(int pipe_num){
     int flag = 0;
     int i;
     pipe_num %= 34;
@@ -17,10 +19,11 @@ void DFS(int num,int p[34][2],int pipe_num){
     }
     int pid = fork();
     while(read(p[pipe_num][0],&i,sizeof(int))){
-        if(i%num != 0 ){
+        if(i % num != 0 ){
             if(!flag && pid == 0){
                 fprintf(1,"%d\n",i);
-                DFS(i,p,pipe_num+1);
+                num = i;
+                DFS(pipe_num+1);
                 flag = 1;
             }
             else if (pid < 0){
@@ -43,9 +46,7 @@ void DFS(int num,int p[34][2],int pipe_num){
 int
 main(int argc, char *argv[])
 {
-    //二维矩阵表示每个进程的管道
-    int p[34][2];
-    int num=2;
+    num=2;
     int flag=1;
     fprintf(1,"%d\n",num);
     if (pipe(p[0]) < 0) {
@@ -57,11 +58,10 @@ main(int argc, char *argv[])
         if(i%num!= 0 ){
             if(pid==0 && flag){
                 fprintf(1, "fork enter first time\n");
-                DFS(num,p,0);
+                DFS(0);
                 flag = 0;
             }
             else if(pid != 0){
-                
                 write(p[1][1],&i,sizeof(int));
                 // fprintf(1, "main write successfully %d\n",i-2);
             }
