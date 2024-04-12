@@ -68,6 +68,7 @@ main(int argc, char *argv[])
                     exit(1);
                 }
                 int pid = fork();
+                fprintf(1, "Began to read\n");
                 while(read(p[pipe_num][0],&i,sizeof(int))){
                     fprintf(1,"read number %d\n",i);
                     if(i % num != 0 ){
@@ -96,6 +97,7 @@ main(int argc, char *argv[])
                 flag = 0;
             }
             else if(pid != 0){
+                fprintf(1, "Write number %d\n",i);
                 write(p[0][1],&i,sizeof(int));
                 // fprintf(1, "main write successfully %d\n",i-2);
             }
