@@ -15,7 +15,7 @@ void DFS(int fd){
     //读取第一个值
     read (fd,&num,sizeof(int));
     printf("Thead(%d) prime %d\n", getpid(), num);
-    fprintf(1, "%d \n",num);
+    fprintf(1, "prime %d \n",num);
     //创建管道
     int p[2];
     if (pipe(p) < 0) {
@@ -33,6 +33,7 @@ void DFS(int fd){
         }
     }
     if(i == -1){
+        fprintf(1, "FINISH\n",i-2);
         close(p[1]);
         close(p[0]);
         close(fd);
@@ -60,7 +61,7 @@ main(int argc, char *argv[])
         fprintf(2, "Error creating pipe\n");
         exit(2);
     }
-    for(int i=2;i<=35;i++){
+    for(int i=2;i<35;i++){
         int num = i;
         write(p[1],&num,sizeof(int));
     }
