@@ -27,7 +27,7 @@ void DFS(int fd){
         if(temp < 0)
             break;
         if(i % num != 0 ){
-            fprintf(1, "Write successfully %d DFS\n",i-2);
+            // fprintf(1, "Write successfully %d DFS\n",i-2);
             write(p[1],&i,sizeof(int));
         }
     }
