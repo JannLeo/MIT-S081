@@ -55,19 +55,18 @@ main(int argc, char *argv[])
         exit(2);
     }
     int pid = fork();
+    int pipe_num = 1;
     for(int i=num+1;i<=35;i++){
         if(i%num!= 0 ){
             if(pid==0 && flag){
                 fprintf(1, "fork enter first time\n");
                 int flagg = 0;
-                int pipe_num = 1;
                 int read_num;
                 pipe_num %= 34;
                 if (pipe(p[pipe_num]) < 0) {
                     fprintf(2, "Error creating pipe\n");
                     exit(1);
                 }
-                int pid = fork();
                 fprintf(1, "Began to read\n");
                 while(read(p[pipe_num-1][0],&read_num,sizeof(int))){
                     fprintf(1,"read number %d\n",read_num);
