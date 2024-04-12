@@ -86,14 +86,14 @@ main(int argc, char *argv[])
                         else{
                             fprintf(1, "main write successfully %d DFS\r\n",i-2);
                             write(p[pipe_num+1][1],&i,sizeof(int));
-                            close(p[pipe_num+1][1]);
+                            
                         }
                     }
                 }
                 fprintf(1,"%d begin to wait\r\n",num);
                 wait(0);
                 close(p[pipe_num][0]);
-                
+                close(p[pipe_num+1][1]);
                 exit(0);
                 flag = 0;
             }
@@ -101,12 +101,11 @@ main(int argc, char *argv[])
                 fprintf(1, "Write number %d\n",i);
                 write(p[0][1],&i,sizeof(int));
                 // fprintf(1, "main write successfully %d\n",i-2);
-                close(p[0][1]);
             }
         }
     }
     wait(0);
     close(p[0][0]);
-    
+    close(p[0][1]);
     exit(0);
 }
