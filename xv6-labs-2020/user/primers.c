@@ -60,7 +60,38 @@ main(int argc, char *argv[])
         if(i%num!= 0 ){
             if(pid==0 && flag){
                 fprintf(1, "fork enter first time\n");
-                DFS(0);
+                int flagg = 0;
+                int i;
+                int pipe_num = 0;
+                pipe_num %= 34;
+                if (pipe(p[pipe_num]) < 0) {
+                    fprintf(2, "Error creating pipe\n");
+                    exit(1);
+                }
+                int pid = fork();
+                while(read(p[pipe_num][0],&i,sizeof(int))){
+                    if(i % num != 0 ){
+                        if(!flagg && pid == 0){
+                            fprintf(1,"%d\n",i);
+                            num = i;
+                            pipe_num += 1;
+                            flagg = 1;
+                            pid = fork();
+                        }
+                        else if (pid < 0){
+                            fprintf(2, "Error forking\n");
+                            exit(2);
+                        }
+                        else{
+                            fprintf(1, "main write successfully %d DFS\n",i-2);
+                            write(p[pipe_num+1][1],&i,sizeof(int));
+                        }
+                    }
+                }
+                wait(0);
+                close(p[pipe_num][0]);
+                close(p[pipe_num][1]);
+                exit(0);
                 flag = 0;
             }
             else if(pid != 0){
