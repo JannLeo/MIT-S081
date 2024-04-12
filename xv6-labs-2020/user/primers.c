@@ -7,7 +7,6 @@
 #include "kernel/types.h"
 #include "kernel/stat.h"
 #include "user/user.h"
-//二维矩阵表示每个进程的管道
 
 void DFS(int fd){
     int i;
@@ -15,7 +14,6 @@ void DFS(int fd){
     //读取第一个值
     if(!read (fd,&num,sizeof(int)))
         exit(0);
-    printf("Thead(%d) prime %d\n", getpid(), num);
     fprintf(1, "prime %d \n",num);
     //创建管道
     int p[2];
