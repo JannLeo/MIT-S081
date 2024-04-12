@@ -60,7 +60,7 @@ main(int argc, char *argv[])
             if(pid==0 && flag){
                 fprintf(1, "fork enter first time\n");
                 int flagg = 0;
-                int pipe_num = 0;
+                int pipe_num = 1;
                 int read_num;
                 pipe_num %= 34;
                 if (pipe(p[pipe_num]) < 0) {
@@ -69,7 +69,7 @@ main(int argc, char *argv[])
                 }
                 int pid = fork();
                 fprintf(1, "Began to read\n");
-                while(read(p[pipe_num][0],&read_num,sizeof(int))){
+                while(read(p[pipe_num-1][0],&read_num,sizeof(int))){
                     fprintf(1,"read number %d\n",read_num);
                     if(read_num % num != 0 ){
                         if(!flagg && pid == 0){
@@ -85,7 +85,7 @@ main(int argc, char *argv[])
                         }
                         else{
                             fprintf(1, "main write successfully %d DFS\r\n",i-2);
-                            write(p[pipe_num+1][1],&i,sizeof(int));
+                            write(p[pipe_num][1],&i,sizeof(int));
                             
                         }
                     }
@@ -99,7 +99,7 @@ main(int argc, char *argv[])
             }
             else if(pid != 0){
                 // fprintf(1, "Write number %d\n",i);
-                write(p[0][1],&i,sizeof(int));
+                write(p[1][1],&i,sizeof(int));
                 // fprintf(1, "main write successfully %d\n",i-2);
             }
         }
