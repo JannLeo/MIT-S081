@@ -82,7 +82,6 @@ find(char *path,char * filename)
 int
 main(int argc, char *argv[])
 {
-  int i;
   if(argc != 3){
     fprintf(2, "Error! The system call of find needs three arguments.\n");
     exit(1);
