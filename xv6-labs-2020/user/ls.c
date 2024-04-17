@@ -57,6 +57,7 @@ ls(char *path)
     p = buf+strlen(buf);
     // 路径末尾添加‘/’ 为下一个路径名添加做准备
     *p++ = '/';
+    //读取fd代表的文件并且获取dirent 文件状态
     while(read(fd, &de, sizeof(de)) == sizeof(de)){
       if(de.inum == 0)
         continue;
