@@ -51,8 +51,11 @@ ls(char *path)
       printf("ls: path too long\n");
       break;
     }
+    //将 path复制到buf缓冲区中
     strcpy(buf, path);
+    // p移动到路径名的末尾
     p = buf+strlen(buf);
+    // 路径末尾添加‘/’ 为下一个路径名添加做准备
     *p++ = '/';
     while(read(fd, &de, sizeof(de)) == sizeof(de)){
       if(de.inum == 0)
