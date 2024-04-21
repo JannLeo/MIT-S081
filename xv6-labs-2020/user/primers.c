@@ -9,7 +9,7 @@
 #include "user/user.h"
 
 void DFS(int fd){
-    int i;
+    int i = -1;
     int num;
     //读取第一个值
     if(!read (fd,&num,sizeof(int)))
